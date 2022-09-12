@@ -21,7 +21,7 @@ const loginSchema = yup.object({
     parmas: yup.object({}),
 });
 const registerSchema = yup.object({
-    body: yub.object({
+    body: yup.object({
         username: yup.string().required(),
         passsword: yup.string().min(3).max(31).required(),
         email: yup.string().email(),
