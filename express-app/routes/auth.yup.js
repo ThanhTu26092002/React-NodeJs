@@ -16,7 +16,7 @@ const validateSchema = (schema) => async (req, res, next) => {
 const loginSchema = yup.object({
     body: yup.object({
         username: yup.string().required(),
-        passsword: yup.string().min(3).max(31).required(),
+        password: yup.string().min(3).max(31).required(),
     }),
     parmas: yup.object({}),
 });
@@ -29,8 +29,16 @@ const registerSchema = yup.object({
     }),
     params: yup.object({})
 });
+
+const productSchema = yup.object({
+    params: yup.object({
+    type: yup.number()
+    }),
+});
+
 module.exports = {
     validateSchema,
     loginSchema,
     registerSchema,
+    productSchema
 };
