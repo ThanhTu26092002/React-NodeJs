@@ -40,5 +40,5 @@ module.exports = {
     validateSchema,
     loginSchema,
     registerSchema,
-    productSchema
+    productSchema,
 };

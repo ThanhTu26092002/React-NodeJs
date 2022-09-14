@@ -13,7 +13,7 @@ router.get('/categories', function (req, res, next) {
             {
               "id": 2,
               "name": "HDD",
-              "description":"Cac loai dia cung cho may tinh"
+              "description":"Cac loai dia cung cho may tinh"  
             }],
             access_token: '...',
         });

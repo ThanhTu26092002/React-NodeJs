@@ -5,6 +5,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var passport = require('passport');
+var JwtStrategy = require('passport-jwt').Strategy;
+var ExtractJwt = require('passport-jwt').ExtractJwt;
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productRouter = require('./routes/product');
@@ -45,6 +49,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Passport: jwt
+var opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = 'ADB57C459465E3ED43C6C6231E3C9';
+opts.issuer = 'softech.cloud';
+opts.audience = 'softech.cloud';
+
+passport.use(
+  new JwtStrategy(opts, function (payload, done) {
+    if (payload.sub === 'tungnt@softech.vn') {
+      return done(null, true);
+    } else {
+      return done(null, false);
+    }
+  }),
+);
+
 
 
 app.use('/', indexRouter);
