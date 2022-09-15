@@ -1,0 +1,13 @@
+use('api-trainingg');
+
+
+db.movies.insertOne({
+    title: 'The Favouriter',
+    genrer: ['Drama','History'],
+    runtime: 121,
+    rated: 'R',
+    yaer: 2018,
+    directors: ['Yorgos Lanthimos'],
+    cast: ['Olivia','Emmma Stone','Rachel Weisz'],
+    type: 'movie',
+});
