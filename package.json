@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "mongodb": "^4.10.0",
     "nodemon": "^2.0.19",
+    "passport": "^0.6.0",
     "passport-jwt": "^4.0.0"
   }
 }
