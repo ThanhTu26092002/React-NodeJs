@@ -1,5 +1,5 @@
 var createError = require('http-errors');
-var express = require('express'); 
+var express = require('express');
 var cors = require('cors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -11,45 +11,51 @@ var ExtractJwt = require('passport-jwt').ExtractJwt;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var productRouter = require('./routes/product');
+var productsRouter = require('./routes/products');
 var authRouter = require('./routes/auth');
-var demoRouter = require('./routes/demo');
 var categoriesRouter = require('./routes/categories');
-var demoDBRouter = require('./routes/demoDB');
+var suppliersRouter = require('./routes/suppliers');
+var ordersRouter = require('./routes/orders');
+var blogsRouter = require('./routes/blogs');
 
 var app = express();
 
-app.use(
-  cors({
-  origin: 'http://localhost:3000',
-  methods: ['GET', 'POST'],
-  }), 
-  );
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-// middleware
-const myLogger = function (req, res, next) {
-  console.log(req.headers['api-key']);
-
-  const apiKey = req.headers['api-key'];
-    if(apiKey && apiKey === 'aptech-node-key') {
-      next();
-    } else{
-      res.sendStatus(401);
-    }
-  console.log('MIDDLEWARE LOGGED');
-};
-
-app.use(myLogger);
-//router
+app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(
+  cors({
+    origin: '*',
+  }),
+);
+
+// ROUTES
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/categories', categoriesRouter);
+app.use('/suppliers', suppliersRouter);
+app.use('/orders', ordersRouter);
+app.use('/blogs', blogsRouter);
+
+// MIDDLEWARE
+const myLogger = function (req, res, next) {
+  console.log(req.headers['api-key']);
+
+  const apiKey = req.headers['api-key'];
+  if (apiKey && apiKey === 'aptech-node-key') {
+    next();
+  } else {
+    res.sendStatus(401);
+  }
+  console.log('MIDDLEWARE LOGGED');
+};
 
 // Passport: jwt
 var opts = {};
@@ -68,31 +74,27 @@ passport.use(
   }),
 );
 
+// END: PASSPORT
 
+// app.use(myLogger);
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/product', productRouter);
-app.use('/demo', demoRouter);
+app.use('/products', productsRouter);
 app.use('/auth', authRouter);
-app.use('/categories', categoriesRouter);
-app.use('/demoDB',demoDBRouter);
-
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send({ error: err.message });
 });
 
 module.exports = app;

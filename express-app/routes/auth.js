@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var { validateSchema, loginSchema} = require('./auth.yup');
+var { validateSchema, loginSchema } = require('./schemas.yup');
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 
@@ -49,4 +49,3 @@ router.get('/', passport.authenticate('jwt', { session: false }), function (req,
 });
 
 module.exports = router;
-  
